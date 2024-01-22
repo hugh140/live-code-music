@@ -4,16 +4,26 @@ import { audioCtx } from "../main";
 class Instrument {
   constructor() {
     this.notes = [];
+    this.lastEffect = new GainNode(audioCtx, {
+      gain: 0.3,
+    });
   }
 
   chord(notes, callback) {
-    const chord = notes.map((note) => callback(getNote(note, 4)));
+    const chord = notes.map((note) => callback(getNote(note)));
     return chord;
   }
 
-  out() {
+  stop() {
     this.notes.forEach((note) => {
-      note.connect(audioCtx.destination);
+      note.stop();
+    });
+  }
+
+  out() {
+    this.lastEffect.connect(audioCtx.destination);
+    this.notes.forEach((note) => {
+      note.connect(this.lastEffect);
       note.start();
     });
   }

@@ -1,8 +1,14 @@
-function getNote(note, octave = 4) {
-  const findNote = notes.find((elNote) => note.toUpperCase() === elNote.note);
+function getNote(note) {
+  const slicedNote = note.split("");
+  const noteValue = slicedNote.slice(0, -1).join("");
+  const octaveValue = Number(slicedNote.at(-1));
 
-  if (octave === 1) return findNote.frecuency;
-  else return findNote.frecuency * (2 * octave);
+  const findNote = notes.find(
+    (elNote) => noteValue.toUpperCase() === elNote.note
+  );
+
+  if (octaveValue === 1) return findNote.frecuency;
+  else return findNote.frecuency * (2 * octaveValue);
 }
 
 export default getNote;

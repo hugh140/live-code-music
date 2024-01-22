@@ -8,14 +8,12 @@ class Osc extends Instrument {
   }
 
   chord(notes) {
-    this.notes = super.chord(
-      notes,
-      (note) =>
-        new OscillatorNode(audioCtx, {
-          type: this.type,
-          frequency: note,
-        })
-    );
+    const callback = (note) =>
+      new OscillatorNode(audioCtx, {
+        type: this.type,
+        frequency: note,
+      });
+    this.notes = super.chord(notes, callback);
     return this;
   }
 }
