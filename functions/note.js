@@ -6,7 +6,7 @@ function getNote(note) {
   const findNote = notes.find(
     (elNote) => noteValue.toUpperCase() === elNote.note
   );
-  
+
   return findNote.frecuency * Math.pow(2, octaveValue - 1);
 }
 

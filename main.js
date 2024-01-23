@@ -14,8 +14,8 @@ executeButton.addEventListener("click", () => {
   audioCtx.resume();
 
   // Eval
-  new Osc("triangle").chord(["c4", "e4", "g4"]).out();
-  new Osc("square").chord(["c4"]).gain(0.1).out();
+  // new Osc("triangle").chord(["c4", "e4", "g4"]).out();
+  new Osc("square").chord(["b4"]).gain(0.3).filter(1000).out();
 
   // eval(codeArea.value);
 });
