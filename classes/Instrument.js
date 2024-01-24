@@ -1,9 +1,8 @@
-import getNote from "../functions/Note";
+import getNote from "../js/Note";
 import { audioCtx } from "../main";
 
 class Instrument {
   constructor() {
-    this.notes = [];
     this.effectChain = [];
     this.gainNode = new GainNode(audioCtx, {
       gain: 0.3,
@@ -18,16 +17,6 @@ class Instrument {
   stop() {
     this.notes.forEach((note) => {
       note.stop();
-    });
-  }
-
-  out() {
-    if (!this.effectChain.length) this.gainNode.connect(audioCtx.destination);
-    else this.effectChain.at(-1).connect(audioCtx.destination);
-
-    this.notes.forEach((note) => {
-      note.connect(this.gainNode);
-      note.start();
     });
   }
 }
