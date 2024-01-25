@@ -6,7 +6,6 @@ class Drum extends Instrument {
     super();
     this.audioBuffer;
     this.pattern = [true];
-    this.beat = 0;
     this.drumName = drumName;
   }
 
@@ -15,7 +14,6 @@ class Drum extends Instrument {
     this.pattern = patternArray.map((beat) =>
       beat.toUpperCase() === "X" ? true : false
     );
-    console.log(this.pattern);
     return this;
   }
 
@@ -30,7 +28,6 @@ class Drum extends Instrument {
   }
 
   play() {
-    console.log(this.beat);
     if (!this.pattern[this.beat]) {
       this.beat = this.pattern.length - 1 > this.beat ? this.beat + 1 : 0;
       return;

@@ -11,11 +11,20 @@ const Effect = {
   },
 
   filter(frecuency, type = "lowpass") {
-    const filter = new BiquadFilterNode(audioCtx, {
+    const filterNode = new BiquadFilterNode(audioCtx, {
       frequency: frecuency,
       type: type,
     });
-    this._putEffect(filter);
+    this._putEffect(filterNode);
+
+    return this;
+  },
+
+  pan(pan) {
+    const panNode = new StereoPannerNode(audioCtx, {
+      pan: pan,
+    });
+    this._putEffect(panNode);
 
     return this;
   },

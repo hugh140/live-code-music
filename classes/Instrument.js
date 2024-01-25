@@ -1,4 +1,3 @@
-import getNote from "../js/Note";
 import { audioCtx } from "../main";
 
 class Instrument {
@@ -7,11 +6,7 @@ class Instrument {
     this.gainNode = new GainNode(audioCtx, {
       gain: 0.3,
     });
-  }
-
-  chord(notes, callback) {
-    const chord = notes.map((note) => callback(getNote(note)));
-    return chord;
+    this.beat = 0;
   }
 
   stop() {
