@@ -40,9 +40,9 @@ executeButton.addEventListener("click", async () => {
   const snare = await new Drum("snare.wav").load();
   const hihat = await new Drum("hihat.wav").load();
 
-  kick.sequence("x-xx-x-xxx-xx-x-x").gain(0.5);
-  snare.sequence("----------x").gain(0.5);
-  hihat.sequence("x").gain(0.5);
+  kick.sequence("xx-xxx-x-").gain(0.5);
+  snare.sequence("---x--x-").filter(1000).gain(0.5);
+  hihat.random(64, 90).gain(0.4);
 
   const triangle = new Osc("triangle")
     .chord(["c3", "e3", "g3"], 16)
@@ -52,13 +52,13 @@ executeButton.addEventListener("click", async () => {
     .gain(0.15);
 
   const square = new Osc("square")
-    .arp(["b4", "d5", "e5", "f#5", "e5"], 1)
+    .arp(["b4", "d5", "e5", "f#5", "e5"], 1, "random")
     .gain(0.1)
     .pan(-1)
     .filter(1500);
 
   const square2 = new Osc("square")
-    .arp(["b5", "d6", "e6", "f#6", "e6"], 1, "down")
+    .arp(["b4", "d5", "e5", "f#5", "e5"], 1, "random")
     .gain(0.05)
     .pan(1)
     .filter(1500);

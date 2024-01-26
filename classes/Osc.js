@@ -1,6 +1,7 @@
 import Instrument from "./Instrument";
 import { audioCtx } from "../main";
 import getNote from "../js/Note";
+import shuffleArr from "../js/shuffleArr";
 
 class Osc extends Instrument {
   constructor(type = "sine") {
@@ -57,6 +58,12 @@ class Osc extends Instrument {
           .forEach((note) =>
             this.notes.push({ notes: [getNote(note)], holdTime: speed })
           );
+        break;
+
+      case "random":
+        shuffleArr(chord).forEach((note) => {
+          this.notes.push({ notes: [getNote(note)], holdTime: speed });
+        });
         break;
     }
     console.log(this.notes);

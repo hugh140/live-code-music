@@ -17,6 +17,18 @@ class Drum extends Instrument {
     return this;
   }
 
+  random(beatsNumber = 8, probability = 50) {
+    this.pattern = (() => {
+      const pattern = [];
+      probability = 1 - (probability / 100)
+      
+      for (let i = 0; i < beatsNumber; i++)
+        pattern.push(Math.random() > probability ? true : false);
+      return pattern;
+    })();
+    return this;
+  }
+
   async load() {
     return new Promise(async (resolve) => {
       const response = await fetch(this.drumName);
