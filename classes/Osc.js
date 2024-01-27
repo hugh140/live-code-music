@@ -10,6 +10,7 @@ class Osc extends Instrument {
     this.notes = [];
     this.chordSection = 0;
     this.playingNotes = [];
+    this.isPlaying = false;
   }
 
   chord(notes, holdTime = 16) {
@@ -20,69 +21,67 @@ class Osc extends Instrument {
     return this;
   }
 
-  arp(chord, speed = 4, mode = "up") {
+  arp(chord, times, mode = "up", speed) {
     switch (mode) {
       case "up":
-        chord.forEach((note) =>
-          this.notes.push({ notes: [getNote(note)], holdTime: speed })
-        );
+        for (let i = 0; i < times; i++)
+          this.notes.push({
+            notes: [getNote(chord[i % chord.length])],
+            holdTime: speed,
+          });
         break;
 
       case "down":
-        chord
-          .reverse()
-          .forEach((note) =>
-            this.notes.push({ notes: [getNote(note)], holdTime: speed })
-          );
+        const reverseChord = chord.reverse();
+        for (let i = 0; i < times; i++)
+          this.notes.push({
+            notes: [getNote(reverseChord[i % chord.length])],
+            holdTime: speed,
+          });
         break;
 
       case "updown":
-        chord.forEach((note) =>
-          this.notes.push({ notes: [getNote(note)], holdTime: speed })
-        );
-        chord
-          .reverse()
-          .slice(1)
-          .forEach((note) =>
-            this.notes.push({ notes: [getNote(note)], holdTime: speed })
-          );
+        const upDownChord = [...chord].concat([...chord].reverse().slice(1));
+        for (let i = 0; i < times; i++)
+          this.notes.push({
+            notes: [getNote(upDownChord[i % chord.length])],
+            holdTime: speed,
+          });
         break;
 
       case "downup":
-        chord.forEach((note) =>
-          this.notes.push({ notes: [getNote(note)], holdTime: speed })
-        );
-        chord
-          .reverse()
-          .slice(1)
-          .forEach((note) =>
-            this.notes.push({ notes: [getNote(note)], holdTime: speed })
-          );
+        const downUpChord = [...chord].reverse().concat([...chord].slice(1));
+        for (let i = 0; i < times; i++)
+          this.notes.push({
+            notes: [getNote(downUpChord[i % chord.length])],
+            holdTime: 1,
+          });
         break;
 
       case "random":
-        shuffleArr(chord).forEach((note) => {
-          this.notes.push({ notes: [getNote(note)], holdTime: speed });
-        });
+        const shuffleChord = shuffleArr(chord);
+        for (let i = 0; i < times; i++)
+          this.notes.push({
+            notes: [getNote(shuffleChord[i % chord.length])],
+            holdTime: 1,
+          });
         break;
     }
-    console.log(this.notes);
     return this;
   }
 
   play() {
-    if (this.beat) {
-      if (this.notes[this.chordSection].holdTime - 1 < this.beat + 1) {
-        this.playingNotes.forEach((note) => note.stop());
-        this.playingNotes = [];
+    if (this.notes[this.chordSection].holdTime - 1 < this.beat + 1) {
+      this.playingNotes.forEach((note) => note.stop());
+      this.playingNotes = [];
+      this.isPlaying = false;
 
-        this.beat = 0;
-        this.chordSection++;
-        if (this.chordSection > this.notes.length - 1) this.chordSection = 0;
+      this.beat = -1;
+      this.chordSection++;
+      if (this.chordSection > this.notes.length - 1) this.chordSection = 0;
+    }
 
-        return;
-      }
-
+    if (this.isPlaying) {
       this.beat++;
       return;
     }
@@ -96,6 +95,7 @@ class Osc extends Instrument {
         frequency: note,
       });
       this.playingNotes.push(oscNote);
+      this.isPlaying = true;
 
       oscNote.connect(this.gainNode);
       oscNote.start();

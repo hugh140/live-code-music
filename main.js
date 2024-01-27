@@ -41,15 +41,16 @@ executeButton.addEventListener("click", async () => {
   const hihat = await new Drum("hihat.wav").load();
 
   kick.sequence("xx-xxx-x-").gain(0.5);
-  snare.sequence("---x--x-").filter(1000).gain(0.5);
-  hihat.random(64, 90).gain(0.4);
+  snare.sequence("").filter(1000).gain(0.5);
+  hihat.random(64, 50).gain(0.4);
 
   const triangle = new Osc("triangle")
-    .chord(["c3", "e3", "g3"], 16)
-    .arp(["e3", "f#3", "a3"], 1, "updown")
-    .chord(["c3", "e3", "g3"], 16)
-    .arp(["b3", "g3", "f#3"], 1, "downup")
-    .gain(0.15);
+    .chord(["c3", "e3", "a3"], 32)
+    .chord(["c3", "e2", "g2"], 12)
+    .arp(["c3", "e2", "g2"], 4, "random")
+    .chord(["e3", "g2", "g3"], 12)
+    .arp(["e3", "g2", "g3"], 4, "random")
+    .gain(0.2);
 
   const square = new Osc("square")
     .arp(["b4", "d5", "e5", "f#5", "e5"], 1, "random")
@@ -65,12 +66,10 @@ executeButton.addEventListener("click", async () => {
 
   scheduler(() => {
     kick.play();
-    snare.play();
+    // snare.play();
     hihat.play();
 
     triangle.play();
-    square.play();
-    square2.play();
   });
 
   // Eval
