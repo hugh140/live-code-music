@@ -1,5 +1,5 @@
 import Instrument from "./Instrument";
-import { audioCtx } from "../main";
+import { audioCtx } from "../audioMain";
 
 class Drum extends Instrument {
   static instances = [];
@@ -34,13 +34,11 @@ class Drum extends Instrument {
   }
 
   async load() {
-    return new Promise(async (resolve) => {
-      const response = await fetch(this.drumName);
-      const arrayBuffer = await response.arrayBuffer();
-      this.audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    const response = await fetch(this.drumName);
+    const arrayBuffer = await response.arrayBuffer();
+    this.audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
 
-      resolve(this);
-    });
+    return this;
   }
 
   play() {

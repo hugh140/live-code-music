@@ -1,7 +1,7 @@
 import Instrument from "./Instrument";
-import { audioCtx } from "../main";
-import getNote from "../js/getNote";
-import shuffleArr from "../js/shuffleArr";
+import { audioCtx } from "../audioMain";
+import getNote from "../scripts/getNote";
+import shuffleArr from "../scripts/shuffleArr";
 
 class Osc extends Instrument {
   static instances = [];

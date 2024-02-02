@@ -1,4 +1,4 @@
-import { audioCtx } from "../main";
+import { audioCtx } from "../audioMain";
 
 const Effect = {
   gain(gain) {

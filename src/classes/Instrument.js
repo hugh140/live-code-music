@@ -1,4 +1,4 @@
-import { audioCtx } from "../main";
+import { audioCtx } from "../audioMain";
 
 class Instrument {
   constructor() {
