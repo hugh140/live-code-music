@@ -10,9 +10,8 @@ class Instrument {
   }
 
   stop() {
-    this.notes.forEach((note) => {
-      note.stop();
-    });
+    // this.playingNotes.forEach((note) => note.stop());
+    console.log(this.playingNotes);
   }
 }
 

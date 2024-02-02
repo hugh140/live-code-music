@@ -1,9 +1,11 @@
 import Instrument from "./Instrument";
 import { audioCtx } from "../main";
-import getNote from "../js/Note";
+import getNote from "../js/getNote";
 import shuffleArr from "../js/shuffleArr";
 
 class Osc extends Instrument {
+  static instances = [];
+
   constructor(type = "sine") {
     super();
     this.type = type;
@@ -11,6 +13,9 @@ class Osc extends Instrument {
     this.chordSection = 0;
     this.playingNotes = [];
     this.isPlaying = false;
+    this.changeNote = false;
+
+    Osc.instances.push(this);
   }
 
   chord(notes, holdTime = 16) {
@@ -21,7 +26,7 @@ class Osc extends Instrument {
     return this;
   }
 
-  arp(chord, times, mode = "up", speed) {
+  arp(chord, times = 16, mode = "up", speed = 2) {
     switch (mode) {
       case "up":
         for (let i = 0; i < times; i++)
@@ -54,7 +59,7 @@ class Osc extends Instrument {
         for (let i = 0; i < times; i++)
           this.notes.push({
             notes: [getNote(downUpChord[i % chord.length])],
-            holdTime: 1,
+            holdTime: speed,
           });
         break;
 
@@ -63,7 +68,7 @@ class Osc extends Instrument {
         for (let i = 0; i < times; i++)
           this.notes.push({
             notes: [getNote(shuffleChord[i % chord.length])],
-            holdTime: 1,
+            holdTime: speed,
           });
         break;
     }
@@ -71,12 +76,18 @@ class Osc extends Instrument {
   }
 
   play() {
-    if (this.notes[this.chordSection].holdTime - 1 < this.beat + 1) {
+    if (this.notes[this.chordSection].holdTime - 1 <= this.beat) {
+      this.beat = -1;
+      this.changeNote = true;
+    }
+
+    if (this.changeNote && this.beat === 0) {
       this.playingNotes.forEach((note) => note.stop());
       this.playingNotes = [];
       this.isPlaying = false;
+      this.changeNote = false;
 
-      this.beat = -1;
+      // this.beat = -1;
       this.chordSection++;
       if (this.chordSection > this.notes.length - 1) this.chordSection = 0;
     }
@@ -101,6 +112,10 @@ class Osc extends Instrument {
       oscNote.start();
     });
     this.beat++;
+  }
+
+  static getAllInstances() {
+    return Osc.instances;
   }
 }
 

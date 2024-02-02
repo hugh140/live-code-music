@@ -1,12 +1,13 @@
 function shuffleArr(arr) {
-  for (let i = arr.length - 1; i >= 0; i--) {
-    const rndIndex = Math.round(Math.abs(Math.random() * arr.length - i));
-    const lastIndex = arr[i];
+  const shuffle = [...arr];
+  for (let i = shuffle.length - 1; i >= 0; i--) {
+    const rndIndex = Math.round(Math.random() * (shuffle.length - i - 1));
+    const lastIndex = shuffle[i];
 
-    arr[i] = arr[rndIndex];
-    arr[rndIndex] = lastIndex;
+    shuffle[i] = shuffle[rndIndex];
+    shuffle[rndIndex] = lastIndex;
   }
 
-  return arr;
+  return shuffle;
 }
 export default shuffleArr;

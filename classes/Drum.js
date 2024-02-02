@@ -2,11 +2,15 @@ import Instrument from "./Instrument";
 import { audioCtx } from "../main";
 
 class Drum extends Instrument {
+  static instances = [];
+
   constructor(drumName) {
     super();
     this.audioBuffer;
     this.pattern = [true];
     this.drumName = drumName;
+
+    Drum.instances.push(this);
   }
 
   sequence(pattern) {
@@ -20,8 +24,8 @@ class Drum extends Instrument {
   random(beatsNumber = 8, probability = 50) {
     this.pattern = (() => {
       const pattern = [];
-      probability = 1 - (probability / 100)
-      
+      probability = 1 - probability / 100;
+
       for (let i = 0; i < beatsNumber; i++)
         pattern.push(Math.random() > probability ? true : false);
       return pattern;
@@ -54,6 +58,10 @@ class Drum extends Instrument {
     sample.connect(this.gainNode);
     sample.start();
     this.beat = this.pattern.length - 1 > this.beat ? this.beat + 1 : 0;
+  }
+
+  static getAllInstances() {
+    return Drum.instances;
   }
 }
 export default Drum;
