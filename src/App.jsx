@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { main } from "./audioMain";
+import Editor from "@monaco-editor/react";
 
 function App() {
   const playButton = useRef();
@@ -7,23 +8,53 @@ function App() {
   const setupArea = useRef();
   const loopArea = useRef();
 
-  useEffect(() => {
+  function handleClick() {
     main(
       playButton.current,
       stopButton.current,
       setupArea.current,
       loopArea.current
     );
-  }, []);
+  }
 
   return (
     <>
-      <textarea ref={setupArea} cols="50" rows="10"></textarea>
+      <Editor
+        height="100px"
+        width="500px"
+        defaultLanguage="javascript"
+        options={{
+          minimap: { enabled: false },
+          overviewRulerBorder: false,
+          lineNumbers: "off",
+        }}
+        onMount={(editor) => {
+          setupArea.current = editor;
+        }}
+      />
+
       <br />
-      <textarea ref={loopArea} cols="50" rows="10"></textarea>
+
+      <Editor
+        height="100px"
+        width="500px"
+        defaultLanguage="javascript"
+        options={{
+          minimap: { enabled: false },
+          overviewRulerBorder: false,
+          lineNumbers: "off",
+        }}
+        onMount={(editor) => {
+          loopArea.current = editor;
+        }}
+      />
       <br />
-      <button ref={playButton}>Execute</button>
-      <button ref={stopButton}>Stop</button>
+      <button onClick={handleClick} ref={playButton}>
+        Execute
+      </button>
+      <button onClick={handleClick} ref={stopButton}>
+        Stop
+      </button>
     </>
   );
 }

@@ -39,8 +39,8 @@ function main(playButton, stopButton, setupArea, loopArea) {
       "Osc",
       "loop",
       `return (async function() {
-      ${setupArea.value}
-      loop(() => {${loopArea.value}})
+      ${setupArea.getValue()}
+      loop(() => {${loopArea.getValue()}})
     })()`
     );
     codeFunction(Drum, Osc, loop);
