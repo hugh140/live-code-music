@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { main } from "./audioMain";
+import { useEffect, useRef } from "react";
+import { assignEditorCode, buttonEvents } from "./audioMain";
 import Editor from "@monaco-editor/react";
 
 function App() {
@@ -8,13 +8,12 @@ function App() {
   const setupArea = useRef();
   const loopArea = useRef();
 
-  function handleClick() {
-    main(
-      playButton.current,
-      stopButton.current,
-      setupArea.current,
-      loopArea.current
-    );
+  useEffect(() => {
+    buttonEvents(playButton.current, stopButton.current);
+  }, [stopButton]);
+
+  function handleEditorChange() {
+    assignEditorCode(setupArea.current, loopArea.current);
   }
 
   return (
@@ -28,8 +27,9 @@ function App() {
           overviewRulerBorder: false,
           lineNumbers: "off",
         }}
-        onMount={(editor) => {
-          setupArea.current = editor;
+        onChange={(value) => {
+          setupArea.current = value;
+          handleEditorChange();
         }}
       />
 
@@ -44,17 +44,14 @@ function App() {
           overviewRulerBorder: false,
           lineNumbers: "off",
         }}
-        onMount={(editor) => {
-          loopArea.current = editor;
+        onChange={(value) => {
+          loopArea.current = value;
+          handleEditorChange();
         }}
       />
       <br />
-      <button onClick={handleClick} ref={playButton}>
-        Execute
-      </button>
-      <button onClick={handleClick} ref={stopButton}>
-        Stop
-      </button>
+      <button ref={playButton}>Execute</button>
+      <button ref={stopButton}>Stop</button>
     </>
   );
 }
