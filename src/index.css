@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #080808;
+}
+
+#sampleList:hover #sampleOptions {
+  display: block;
+}

@@ -4,11 +4,10 @@ import { audioCtx } from "../audioMain";
 class Drum extends Instrument {
   static instances = [];
 
-  constructor(drumName) {
+  constructor() {
     super();
     this.audioBuffer;
     this.pattern = [true];
-    this.drumName = drumName;
 
     Drum.instances.push(this);
   }
@@ -33,10 +32,12 @@ class Drum extends Instrument {
     return this;
   }
 
-  async load() {
-    const response = await fetch(this.drumName);
-    const arrayBuffer = await response.arrayBuffer();
-    this.audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+  load(drumFile) {
+    const fileReader = new FileReader();
+    fileReader.onload = async () => {
+      this.audioBuffer = await audioCtx.decodeAudioData(fileReader.result);
+    };
+    fileReader.readAsArrayBuffer(drumFile);
 
     return this;
   }

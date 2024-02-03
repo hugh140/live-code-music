@@ -17,6 +17,7 @@ let nextNoteTime = 0;
 let beat = 4;
 let bpm = 150;
 let codeFunction;
+let audioSamples = {};
 
 let setupArea, loopArea;
 
@@ -38,7 +39,13 @@ function assignEditorCode(setup, loop) {
   loopArea = loop;
 }
 
-async function startTimer() {
+async function appendAudioSamples(samples) {
+  audioSamples = {};
+  for (const sample of samples)
+    audioSamples[sample.name] = await new Drum().load(sample);
+}
+
+function startTimer() {
   Osc.getAllInstances().forEach((instance) =>
     instance.playingNotes.forEach((note) => note.stop())
   );
@@ -47,12 +54,13 @@ async function startTimer() {
     "Drum",
     "Osc",
     "loop",
+    "sample",
     `return (async function() {
       ${setupArea}
       loop(() => {${loopArea}})
     })()`
   );
-  codeFunction(Drum, Osc, loop);
+  codeFunction(Osc, loop, audioSamples);
 }
 
 function stopTimer() {
@@ -92,4 +100,4 @@ function nextNote() {
   if (currentNote === 0) firstBeat = (firstBeat + 1) % beat;
 }
 
-export { buttonEvents, assignEditorCode, audioCtx };
+export { buttonEvents, assignEditorCode, appendAudioSamples, audioCtx };
