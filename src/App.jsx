@@ -2,6 +2,8 @@ import { useEffect, useRef } from "react";
 import { assignEditorCode, buttonEvents } from "./audioMain";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import UploadPanel from "./components/uploadPanel";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const monaco = useMonaco();
@@ -58,12 +60,12 @@ function App() {
   }
 
   return (
-    <>
-      <div className="flex-nowrap md:flex p-5 gap-10">
-        <div className="w-full md:w-1/2 relative mx-auto">
+    <main className="p-5">
+      <div className="flex flex-row gap-10">
+        <div className="relative mx-auto basis-1/2">
           <Editor
             height="80vh"
-            width="100%"
+            width="auto"
             loading={false}
             defaultLanguage="javascript"
             theme=""
@@ -89,10 +91,10 @@ function App() {
           </h1> */}
         </div>
 
-        <div className="w-full md:w-1/2 relative mx-auto">
+        <div className="relative mx-auto basis-1/2">
           <Editor
             height="80vh"
-            width="100%"
+            width="auto"
             loading={false}
             defaultLanguage="javascript"
             options={{
@@ -117,16 +119,27 @@ function App() {
           </h1> */}
         </div>
 
-        <div className="w-1/4">
+        <div className="basis-1/6">
           <UploadPanel />
         </div>
       </div>
-      <br />
-      <button className="bg-blue-500" ref={playButton}>
-        Execute
-      </button>
-      <button ref={stopButton}>Stop</button>
-    </>
+      <div className="flex pt-3 mt-3 gap-5 border-t-2 border-zinc-500 border-double">
+        <button
+          className="border-2 p-2 rounded px-4 border-lime-500 text-lime-500
+            hover:bg-lime-600 hover:text-white active:text-white active:bg-lime-950"
+          ref={playButton}
+        >
+          <FontAwesomeIcon icon={faPlay} />
+        </button>
+        <button
+          className="border-2 p-2 rounded px-4 border-red-500 text-red-500
+            hover:bg-red-600 hover:text-white active:text-white active:bg-red-950"
+          ref={stopButton}
+        >
+          <FontAwesomeIcon icon={faStop} />
+        </button>
+      </div>
+    </main>
   );
 }
 

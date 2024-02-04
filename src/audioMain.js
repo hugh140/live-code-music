@@ -51,7 +51,6 @@ function startTimer() {
   );
 
   codeFunction = new Function(
-    "Drum",
     "Osc",
     "loop",
     "sample",
