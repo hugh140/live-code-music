@@ -41,8 +41,9 @@ function assignEditorCode(setup, loop) {
 
 async function appendAudioSamples(samples) {
   audioSamples = {};
+  console.log(samples)
   for (const sample of samples)
-    audioSamples[sample.name] = await new Drum().load(sample);
+    audioSamples[sample.file.name] = await new Drum().load(sample.file);
 }
 
 function startTimer() {

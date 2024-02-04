@@ -10,7 +10,12 @@ function UploadPanel() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (files) => {
       const audioSamplesCopy = [...audioSamples];
-      files.forEach((file) => audioSamplesCopy.push(file));
+      files.forEach((file) =>
+        audioSamplesCopy.push({
+          file: new File([file], file.name.split(".").slice(0, -1).join(".")),
+          renameField: false,
+        })
+      );
       setAudioSamples(audioSamplesCopy);
       appendAudioSamples(audioSamplesCopy);
     },
@@ -22,12 +27,27 @@ function UploadPanel() {
     },
   });
 
-  function editAudioSampleName(index) {
-    const newName = prompt("Write a new name for the sample.");
-    if (!newName) return;
+  function switchRenameField(index) {
+    const audioSamplesCopy = [...audioSamples];
+    audioSamplesCopy[index].renameField = !audioSamplesCopy[index].renameField;
+    setAudioSamples(audioSamplesCopy);
+  }
+
+  function editAudioSampleName(evt, index) {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    const newName = formData.get("name");
+
+    console.log(newName);
 
     const audioSamplesCopy = [...audioSamples];
-    audioSamplesCopy[index] = new File([audioSamplesCopy[index]], newName);
+    audioSamplesCopy[index].renameField = false;
+
+    if (newName)
+      audioSamplesCopy[index].file = new File(
+        [audioSamplesCopy[index].file],
+        newName
+      );
     setAudioSamples(audioSamplesCopy);
     appendAudioSamples(audioSamplesCopy);
   }
@@ -62,7 +82,7 @@ function UploadPanel() {
               id="sampleList"
             >
               <p className="truncate">
-                {index + 1}. {sample.name}
+                {index + 1}. {sample.file.name}
               </p>
               <div
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
@@ -75,7 +95,7 @@ function UploadPanel() {
                 >
                   <button
                     className="bg-lime-500 p-1 rounded active:bg-lime-800"
-                    onClick={() => editAudioSampleName(index)}
+                    onClick={() => switchRenameField(index)}
                   >
                     <FontAwesomeIcon icon={faPencil} />
                   </button>
@@ -88,6 +108,16 @@ function UploadPanel() {
                 </div>
               </div>
             </li>
+            {sample.renameField && (
+              <form onSubmit={(evt) => editAudioSampleName(evt, index)}>
+                <input
+                  name="name"
+                  type="text"
+                  className="w-full px-2 py-1 mb-1 bg-zinc-800 rounded-b-lg"
+                  autoFocus={true}
+                />
+              </form>
+            )}
           </div>
         ))}
       </ul>

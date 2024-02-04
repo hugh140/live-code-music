@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { assignEditorCode, buttonEvents } from "./audioMain";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import UploadPanel from "./components/uploadPanel";
+import UploadPanel from "./components/UploadPanel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
 
@@ -38,8 +38,6 @@ function App() {
       colors: {},
     });
     monaco?.editor.setTheme("default");
-
-    // document.getElementById().style.backdropFilter
 
     const monacoEditor = document.getElementsByClassName("monaco-editor");
     for (const htmlElement of monacoEditor) {
@@ -123,7 +121,7 @@ function App() {
           <UploadPanel />
         </div>
       </div>
-      <div className="flex pt-3 mt-3 gap-5 border-t-2 border-zinc-500 border-double">
+      <div className="flex pt-3 mt-3 gap-5 border-t-2 border-zinc-500">
         <button
           className="border-2 p-2 rounded px-4 border-lime-500 text-lime-500
             hover:bg-lime-600 hover:text-white active:text-white active:bg-lime-950"
