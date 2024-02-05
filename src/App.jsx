@@ -1,21 +1,23 @@
-import { useEffect, useRef } from "react";
-import { assignEditorCode, buttonEvents } from "./audioMain";
+import { useEffect, useState } from "react";
+import { assignEditorCode } from "./audioMain";
 import Editor, { useMonaco } from "@monaco-editor/react";
 import UploadPanel from "./components/UploadPanel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import OptionsBar from "./components/OptionsBar";
 
 function App() {
   const monaco = useMonaco();
-
-  const playButton = useRef();
-  const stopButton = useRef();
-  let setupAreaValue;
-  let loopAreaValue;
+  const [selectedCodeCard, setSelectedCodeCard] = useState(0);
+  const [codeCards, setCodeCards] = useState(() => {
+    const codeCardsArr = [];
+    for (let i = 0; i < 8; i++) codeCardsArr[i] = { setup: "", loop: "" };
+    return codeCardsArr;
+  });
 
   useEffect(() => {
-    buttonEvents(playButton.current, stopButton.current);
-  }, [stopButton]);
+    assignCode(codeCards);
+  }, [selectedCodeCard]);
 
   useEffect(() => {
     monaco?.editor.defineTheme("default", {
@@ -53,14 +55,43 @@ function App() {
     }
   }, [monaco]);
 
-  function handleEditorChange() {
-    assignEditorCode(setupAreaValue, loopAreaValue);
+  function handleSetupCodeChange(value) {
+    const cardsCopy = [...codeCards];
+    cardsCopy[selectedCodeCard].setup = value;
+    setCodeCards(cardsCopy);
+    assignCode(cardsCopy);
+  }
+
+  function handleLoopCodeChange(value) {
+    const cardsCopy = [...codeCards];
+    cardsCopy[selectedCodeCard].loop = value;
+    setCodeCards(cardsCopy);
+    assignCode(cardsCopy);
+  }
+
+  function assignCode(array) {
+    assignEditorCode(
+      array[selectedCodeCard].setup,
+      array[selectedCodeCard].loop
+    );
   }
 
   return (
     <main className="p-5">
+      {!monaco && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <FontAwesomeIcon
+            icon={faSpinner}
+            className="text-white text-5xl"
+            spin={true}
+          />
+        </div>
+      )}
       <div className="flex flex-row gap-10">
-        <div className="relative mx-auto basis-1/2">
+        <div
+          className="relative mx-auto basis-1/2"
+          style={{ visibility: monaco ? "visible" : "hidden" }}
+        >
           <Editor
             height="80vh"
             width="auto"
@@ -70,23 +101,11 @@ function App() {
             options={{
               minimap: { enabled: false },
               overviewRulerBorder: false,
+              wordWrap: "on",
             }}
-            onChange={(value) => {
-              setupAreaValue = value;
-              handleEditorChange();
-            }}
+            onChange={handleSetupCodeChange}
+            value={{ ...codeCards[selectedCodeCard] }.setup}
           />
-          {/* <h1
-            className="absolute top-1/2 left-0 -translate-y-1/2 text-center
-          text-5xl font-bold opacity-50 text-white"
-            style={{
-              textOrientation: "upright",
-              writingMode: "vertical-rl",
-              userSelect: "none",
-            }}
-          >
-            Setup
-          </h1> */}
         </div>
 
         <div className="relative mx-auto basis-1/2">
@@ -98,44 +117,36 @@ function App() {
             options={{
               minimap: { enabled: false },
               overviewRulerBorder: false,
+              wordWrap: "on",
             }}
-            onChange={(value) => {
-              loopAreaValue = value;
-              handleEditorChange();
-            }}
+            onChange={handleLoopCodeChange}
+            value={codeCards[selectedCodeCard].loop}
           />
-          {/* <h1
-            className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 text-center
-            text-5xl font-bold opacity-50 text-white"
-            style={{
-              textOrientation: "upright",
-              writingMode: "vertical-rl",
-              userSelect: "none",
-            }}
-          >
-            Loop
-          </h1> */}
         </div>
 
-        <div className="basis-1/6">
+        <div
+          className="basis-1/6"
+          style={{ visibility: monaco ? "visible" : "hidden" }}
+        >
           <UploadPanel />
         </div>
       </div>
       <div className="flex pt-3 mt-3 gap-5 border-t-2 border-zinc-500">
-        <button
-          className="border-2 p-2 rounded px-4 border-lime-500 text-lime-500
-            hover:bg-lime-600 hover:text-white active:text-white active:bg-lime-950"
-          ref={playButton}
-        >
-          <FontAwesomeIcon icon={faPlay} />
-        </button>
-        <button
-          className="border-2 p-2 rounded px-4 border-red-500 text-red-500
-            hover:bg-red-600 hover:text-white active:text-white active:bg-red-950"
-          ref={stopButton}
-        >
-          <FontAwesomeIcon icon={faStop} />
-        </button>
+        <OptionsBar />
+        <div className="h-14 pe-3 border-s-2 border-white py-2"></div>
+        {codeCards.map((card, index) => (
+          <button
+            key={index}
+            className="text-2xl font-bold bg-zinc-400 w-9 rounded-lg 
+          hover:bg-zinc-700 active:bg-transparent hover:text-white"
+            style={{
+              border: selectedCodeCard === index ? "5px double black" : null,
+            }}
+            onClick={() => setSelectedCodeCard(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </main>
   );
