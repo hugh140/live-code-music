@@ -2,7 +2,7 @@ import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { appendAudioSamples } from "../audioMain";
+import { appendAudioSamples } from "../scripts/audioMain";
 
 function UploadPanel() {
   const [audioSamples, setAudioSamples] = useState([]);
@@ -60,7 +60,7 @@ function UploadPanel() {
   }
 
   return (
-    <aside className="border-2 p-2 border-zinc-800 rounded-lg h-full">
+    <aside className="border-2 p-2 border-zinc-800 rounded-lg h-full backdrop-blur-[2px]">
       <div
         {...getRootProps()}
         className="border-b-2 border-zinc-800 rounded-lg p-5 text-center border-dashed 

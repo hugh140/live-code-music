@@ -10,6 +10,11 @@ body {
   display: block;
 }
 
+#background {
+  display: absolute;
+  z-index: -20;
+}
+
 input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }

@@ -1,5 +1,5 @@
 import Instrument from "./Instrument";
-import { audioCtx } from "../audioMain";
+import { audioCtx, audioAnalyzer } from "../scripts/audioMain";
 import getNote from "../scripts/getNote";
 import shuffleArr from "../scripts/shuffleArr";
 
@@ -97,8 +97,9 @@ class Osc extends Instrument {
       return;
     }
 
-    if (!this.effectChain.length) this.gainNode.connect(audioCtx.destination);
-    else this.effectChain.at(-1).connect(audioCtx.destination);
+    if (!this.effectChain.length) this.gainNode.connect(audioAnalyzer);
+    else this.effectChain.at(-1).connect(audioAnalyzer);
+    audioAnalyzer.connect(audioCtx.destination);
 
     this.notes[this.chordSection].notes.forEach((note) => {
       const oscNote = new OscillatorNode(audioCtx, {

@@ -1,5 +1,5 @@
 import Instrument from "./Instrument";
-import { audioCtx } from "../audioMain";
+import { audioAnalyzer, audioCtx } from "../scripts/audioMain";
 
 class Drum extends Instrument {
   static instances = [];
@@ -8,6 +8,7 @@ class Drum extends Instrument {
     super();
     this.audioBuffer;
     this.pattern = [true];
+    this.actualSample;
 
     Drum.instances.push(this);
   }
@@ -48,14 +49,15 @@ class Drum extends Instrument {
       return;
     }
 
-    if (!this.effectChain.length) this.gainNode.connect(audioCtx.destination);
-    else this.effectChain.at(-1).connect(audioCtx.destination);
+    if (!this.effectChain.length) this.gainNode.connect(audioAnalyzer);
+    else this.effectChain.at(-1).connect(audioAnalyzer);
+    audioAnalyzer.connect(audioCtx.destination);
 
-    const sample = new AudioBufferSourceNode(audioCtx, {
+    this.actualSample = new AudioBufferSourceNode(audioCtx, {
       buffer: this.audioBuffer,
     });
-    sample.connect(this.gainNode);
-    sample.start();
+    this.actualSample.connect(this.gainNode);
+    this.actualSample.start();
     this.beat = this.pattern.length - 1 > this.beat ? this.beat + 1 : 0;
   }
 

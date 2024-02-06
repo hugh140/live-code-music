@@ -1,4 +1,4 @@
-import { audioCtx } from "../audioMain";
+import { audioCtx } from "../scripts/audioMain";
 
 class Instrument {
   constructor() {
@@ -7,11 +7,6 @@ class Instrument {
       gain: 0.3,
     });
     this.beat = 0;
-  }
-
-  stop() {
-    // this.playingNotes.forEach((note) => note.stop());
-    console.log(this.playingNotes);
   }
 }
 

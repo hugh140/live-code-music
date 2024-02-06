@@ -1,12 +1,18 @@
-import Osc from "./classes/Osc";
-import Effect from "./classes/Effect";
-import Drum from "./classes/Drum";
+import Osc from "../classes/Osc";
+import Effect from "../classes/Effect";
+import Drum from "../classes/Drum";
 
 Object.assign(Osc.prototype, Effect);
 Object.assign(Drum.prototype, Effect);
 
 const audioCtx = new AudioContext();
 audioCtx.suspend();
+
+const audioAnalyzer = new AnalyserNode(audioCtx, {
+  fftSize: 256,
+  maxDecibels: 100,
+  minDecibels: -100,
+});
 
 let timerID = 0;
 let startTime = false;
@@ -61,6 +67,7 @@ function startTimer() {
   Osc.getAllInstances().forEach((instance) =>
     instance.playingNotes.forEach((note) => note.stop())
   );
+  Drum.getAllInstances().forEach((instance) => instance.actualSample?.stop());
 
   codeFunction = new Function(
     "Osc",
@@ -124,4 +131,6 @@ export {
   setBpm,
   setTimeSignature,
   audioCtx,
+  audioAnalyzer,
+  firstBeat,
 };

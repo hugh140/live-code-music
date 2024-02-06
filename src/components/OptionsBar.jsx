@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faStop } from "@fortawesome/free-solid-svg-icons";
-import { buttonEvents, setBpm, setTimeSignature } from "../audioMain";
+import { buttonEvents, setBpm, setTimeSignature } from "../scripts/audioMain";
 import { useRef, useEffect } from "react";
 
 let top = 4;
