@@ -23,7 +23,7 @@ function BackVisuals() {
     ctx.fillStyle = "#080808";
 
     (function draw() {
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       audioAnalyzer.getByteTimeDomainData(dataArray);
 
       let lastPointX = 0;
@@ -36,6 +36,7 @@ function BackVisuals() {
         lastPointY = dataArray[i] * 2.5;
         ctx.lineTo(lastPointX, lastPointY);
       }
+
       if (beat !== firstBeat) {
         if (firstBeat === 0) ctx.lineWidth = 100;
         else ctx.lineWidth = 10;

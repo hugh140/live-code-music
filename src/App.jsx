@@ -52,7 +52,6 @@ function App() {
         "--vscode-editorGutter-background",
         "transparent"
       );
-      htmlElement.style.backdropFilter = "blur(2px)";
     }
   }, [monaco]);
 
@@ -134,7 +133,7 @@ function App() {
             <UploadPanel />
           </div>
         </div>
-        <div className="flex pt-3 mt-3 gap-5 border-t-2 border-zinc-500">
+        <div className="flex pt-3 mt-4 gap-5">
           <OptionsBar />
           <div className="h-14 pe-3 border-s-2 border-white py-2"></div>
           {codeCards.map((card, index) => (

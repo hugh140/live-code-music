@@ -38,8 +38,6 @@ function UploadPanel() {
     const formData = new FormData(evt.target);
     const newName = formData.get("name");
 
-    console.log(newName);
-
     const audioSamplesCopy = [...audioSamples];
     audioSamplesCopy[index].renameField = false;
 
@@ -60,7 +58,7 @@ function UploadPanel() {
   }
 
   return (
-    <aside className="border-2 p-2 border-zinc-800 rounded-lg h-full backdrop-blur-[2px]">
+    <aside className="border-2 p-2 border-zinc-800 rounded-lg h-full">
       <div
         {...getRootProps()}
         className="border-b-2 border-zinc-800 rounded-lg p-5 text-center border-dashed 
