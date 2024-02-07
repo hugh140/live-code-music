@@ -1,6 +1,7 @@
 import Osc from "../classes/Osc";
 import Effect from "../classes/Effect";
 import Drum from "../classes/Drum";
+import { audioSamples } from "./loadSamples";
 
 Object.assign(Osc.prototype, Effect);
 Object.assign(Drum.prototype, Effect);
@@ -24,7 +25,6 @@ let topTimeSignature = 4;
 let bottomTimeSignature = 4;
 let bpm = 120;
 let codeFunction;
-let audioSamples = {};
 
 let setupArea, loopArea;
 
@@ -47,12 +47,6 @@ function assignEditorCode(setup, loop) {
   loopArea = loop;
 }
 
-async function appendAudioSamples(samples) {
-  audioSamples = {};
-  for (const sample of samples)
-    audioSamples[sample.file.name] = await new Drum().load(sample.file);
-}
-
 function setBpm(changeBpm) {
   bpm = changeBpm;
 }
@@ -71,6 +65,7 @@ function startTimer() {
 
   codeFunction = new Function(
     "Osc",
+    "Drum",
     "loop",
     "sample",
     `return (async function() {
@@ -78,7 +73,7 @@ function startTimer() {
       loop(() => {${loopArea}})
     })()`
   );
-  codeFunction(Osc, loop, audioSamples);
+  codeFunction(Osc, Drum, loop, audioSamples);
 }
 
 function stopTimer() {
@@ -127,7 +122,6 @@ function nextNote() {
 export {
   buttonEvents,
   assignEditorCode,
-  appendAudioSamples,
   setBpm,
   setTimeSignature,
   audioCtx,

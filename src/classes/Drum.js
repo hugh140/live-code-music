@@ -4,9 +4,9 @@ import { audioAnalyzer, audioCtx } from "../scripts/audioMain";
 class Drum extends Instrument {
   static instances = [];
 
-  constructor() {
+  constructor(sample) {
     super();
-    this.audioBuffer;
+    this.audioBuffer = sample;
     this.pattern = [true];
     this.actualSample;
 
@@ -30,16 +30,6 @@ class Drum extends Instrument {
         pattern.push(Math.random() > probability ? true : false);
       return pattern;
     })();
-    return this;
-  }
-
-  load(drumFile) {
-    const fileReader = new FileReader();
-    fileReader.onload = async () => {
-      this.audioBuffer = await audioCtx.decodeAudioData(fileReader.result);
-    };
-    fileReader.readAsArrayBuffer(drumFile);
-
     return this;
   }
 

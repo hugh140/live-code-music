@@ -79,7 +79,7 @@ function App() {
   return (
     <>
       <BackVisuals />
-      <main className="p-5">
+      <main className="p-3">
         {!monaco && (
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <FontAwesomeIcon

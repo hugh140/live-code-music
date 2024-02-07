@@ -2,7 +2,7 @@ import { useDropzone } from "react-dropzone";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash, faPencil } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { appendAudioSamples } from "../scripts/audioMain";
+import { appendAudioSamples } from "../scripts/loadSamples";
 
 function UploadPanel() {
   const [audioSamples, setAudioSamples] = useState([]);
