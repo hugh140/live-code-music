@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import OptionsBar from "./components/OptionsBar";
 import BackVisuals from "./components/BackVisuals";
+import useEditor from "./hooks/useEditor";
 
 function App() {
-  const monaco = useMonaco();
   const [selectedCodeCard, setSelectedCodeCard] = useState(0);
   const [codeCards, setCodeCards] = useState(() => {
     const codeCardsArr = [];
@@ -16,44 +16,12 @@ function App() {
     return codeCardsArr;
   });
 
+  useEditor();
+  const monaco = useMonaco()
+
   useEffect(() => {
     assignCode(codeCards);
   }, [selectedCodeCard]);
-
-  useEffect(() => {
-    monaco?.editor.defineTheme("default", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [
-        {
-          token: "identifier",
-          foreground: "9CDCFE",
-        },
-        {
-          token: "identifier.function",
-          foreground: "DCDCAA",
-        },
-        {
-          token: "type",
-          foreground: "1AAFB0",
-        },
-      ],
-      colors: {},
-    });
-    monaco?.editor.setTheme("default");
-
-    const monacoEditor = document.getElementsByClassName("monaco-editor");
-    for (const htmlElement of monacoEditor) {
-      htmlElement.style.setProperty(
-        "--vscode-editor-background",
-        "transparent"
-      );
-      htmlElement.style.setProperty(
-        "--vscode-editorGutter-background",
-        "transparent"
-      );
-    }
-  }, [monaco]);
 
   function handleSetupCodeChange(value) {
     const cardsCopy = [...codeCards];

@@ -28,49 +28,61 @@ class Osc extends Instrument {
 
   arp(chord, times = 16, mode = "up", speed = 2) {
     switch (mode) {
-      case "up":
+      case "up": {
         for (let i = 0; i < times; i++)
           this.notes.push({
             notes: [getNote(chord[i % chord.length])],
             holdTime: speed,
           });
         break;
+      }
 
-      case "down":
+      case "down": {
         const reverseChord = chord.reverse();
         for (let i = 0; i < times; i++)
           this.notes.push({
-            notes: [getNote(reverseChord[i % chord.length])],
+            notes: [getNote(reverseChord[i % reverseChord.length])],
             holdTime: speed,
           });
         break;
+      }
 
-      case "updown":
-        const upDownChord = [...chord].concat([...chord].reverse().slice(1));
+      case "updown": {
+        const upDownChord = [...chord]
+          .concat([...chord].reverse().slice(1))
+          .slice(0, -1);
+        console.log(upDownChord);
         for (let i = 0; i < times; i++)
           this.notes.push({
-            notes: [getNote(upDownChord[i % chord.length])],
+            notes: [getNote(upDownChord[i % upDownChord.length])],
             holdTime: speed,
           });
         break;
+      }
 
-      case "downup":
-        const downUpChord = [...chord].reverse().concat([...chord].slice(1));
+      case "downup": {
+        const downUpChord = [...chord]
+          .reverse()
+          .concat([...chord].slice(1))
+          .slice(0, -1);
         for (let i = 0; i < times; i++)
           this.notes.push({
-            notes: [getNote(downUpChord[i % chord.length])],
+            notes: [getNote(downUpChord[i % downUpChord.length])],
             holdTime: speed,
           });
         break;
+      }
 
-      case "random":
+      case "random": {
         const shuffleChord = shuffleArr(chord);
         for (let i = 0; i < times; i++)
           this.notes.push({
             notes: [getNote(shuffleChord[i % chord.length])],
             holdTime: speed,
           });
+        console.log(shuffleChord)
         break;
+      }
     }
     return this;
   }

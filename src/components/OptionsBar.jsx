@@ -43,8 +43,8 @@ function OptionsBar() {
   return (
     <>
       <button
-        className="border-2 p-2 rounded px-5 border-green-500 text-green-500
-            hover:bg-green-800 hover:text-white active:text-white active:bg-green-950"
+        className="border-2 p-2 rounded px-5 border-[#247F68] text-[#247F68]
+            hover:bg-[#226856] hover:text-white active:text-white active:bg-[#1c5748]"
         ref={playButton}
       >
         <FontAwesomeIcon icon={faPlay} />
