@@ -28,18 +28,26 @@ let codeFunction;
 
 let setupArea, loopArea;
 
+function play() {
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+    startTimer();
+  } else startTime = true;
+}
+
+function stop() {
+  stopTime = true;
+}
+
+document.body.addEventListener("keydown", (evt) => {
+  if (evt.repeat) return;
+  if (evt.ctrlKey && evt.key === "Enter") play();
+});
+
 // Setting DOM events and variables values
 function buttonEvents(playButton, stopButton) {
-  playButton.addEventListener("click", () => {
-    if (audioCtx.state === "suspended") {
-      audioCtx.resume();
-      startTimer();
-    } else startTime = true;
-  });
-
-  stopButton.addEventListener("click", () => {
-    stopTime = true;
-  });
+  playButton.addEventListener("click", play);
+  stopButton.addEventListener("click", stop);
 }
 
 function assignEditorCode(setup, loop) {
