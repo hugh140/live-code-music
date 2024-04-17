@@ -17,7 +17,7 @@ function App() {
   });
 
   useEditor();
-  const monaco = useMonaco()
+  const monaco = useMonaco();
 
   useEffect(() => {
     assignCode(codeCards);
@@ -72,6 +72,7 @@ function App() {
                 minimap: { enabled: false },
                 overviewRulerBorder: false,
                 wordWrap: "on",
+                tabFocusMode: true,
               }}
               onChange={handleSetupCodeChange}
               value={{ ...codeCards[selectedCodeCard] }.setup}

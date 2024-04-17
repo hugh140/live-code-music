@@ -41,7 +41,7 @@ function stop() {
 
 document.body.addEventListener("keydown", (evt) => {
   if (evt.repeat) return;
-  if (evt.ctrlKey && evt.key === "Enter") play();
+  if (evt.altKey && evt.key === "Enter") play();
 });
 
 // Setting DOM events and variables values

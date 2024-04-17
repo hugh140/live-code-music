@@ -15,14 +15,14 @@ function BackVisuals() {
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    const lineDivision = canvas.width / divisions;
+    let lineDivision = canvas.width / divisions;
     let beat = firstBeat;
 
     ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.fillStyle = "#080808";
 
-    (function draw() {
+    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       audioAnalyzer.getByteTimeDomainData(dataArray);
 
@@ -46,7 +46,17 @@ function BackVisuals() {
       ctx.closePath();
       ctx.stroke();
       animationRef.current = requestAnimationFrame(draw);
-    })();
+    }
+    draw();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      lineDivision = canvas.width / divisions;
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "white";
+      ctx.fillStyle = "#080808";
+    });
   }
 
   useEffect(() => {
