@@ -23,6 +23,16 @@ function App() {
     assignCode(codeCards);
   }, [selectedCodeCard]);
 
+  useEffect(() => {
+    const regex = /^[1-8]$/;
+
+    document.addEventListener("keydown", (evt) => {
+      if (evt.repeat) return;
+      if (evt.altKey && regex.test(Number(evt.key)))
+        setSelectedCodeCard(Number(evt.key) - 1);
+    });
+  }, [selectedCodeCard]);
+
   function handleSetupCodeChange(value) {
     const cardsCopy = [...codeCards];
     cardsCopy[selectedCodeCard].setup = value;
@@ -109,7 +119,7 @@ function App() {
             <button
               key={index}
               className="text-2xl font-bold bg-zinc-400 w-9 rounded-lg 
-          hover:bg-zinc-700 active:bg-transparent hover:text-white"
+            hover:bg-zinc-700 active:bg-transparent hover:text-white"
               style={{
                 border: selectedCodeCard === index ? "5px double black" : null,
               }}
